@@ -1,16 +1,17 @@
 export default function WeeklySuggestions({ options, getWeightedScore }) {
-  if (!options.length) return <p className="text-center text-gray-500 mb-4">No options added in the last 7 days.</p>;
+  if (!options.length)
+    return <p className="text-center mt-2">No options added in the last 7 days.</p>;
+
   return (
-    <div className="mb-4">
-      <h2 className="font-semibold mb-2">Weekly Suggestions</h2>
-      {options.map(opt => (
-        <div key={opt.id} className="p-2 mb-1 border rounded bg-white">
-          <div className="flex justify-between">
-            <span>{opt.name}</span>
-            <span className="font-bold text-blue-600">{getWeightedScore(opt).toFixed(1)}</span>
-          </div>
-        </div>
-      ))}
+    <div className="mt-4">
+      <h2 className="text-lg font-semibold mb-2">Weekly Suggestions</h2>
+      <ul className="list-disc pl-5">
+        {options.map((opt) => (
+          <li key={opt.id}>
+            {opt.name} - Weighted Score: {getWeightedScore(opt).toFixed(2)}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
