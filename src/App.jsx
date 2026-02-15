@@ -12,12 +12,15 @@ const getWeightedScore = (option) =>
 // Get best option by weighted score
 const getBestOption = (options) => {
   if (!options.length) return null;
-  return options.reduce((best, current) =>
-    getWeightedScore(current) > getWeightedScore(best) ? current : best
-  , options[0]);
+  return options.reduce(
+    (best, current) =>
+      getWeightedScore(current) > getWeightedScore(best) ? current : best,
+    options[0]
+  );
 };
 
 export default function App() {
+  // Load options from localStorage
   const [options, setOptions] = useState(() => {
     const saved = localStorage.getItem('options');
     return saved ? JSON.parse(saved) : [];
@@ -39,6 +42,7 @@ export default function App() {
   // Persist options + recalc recommended if deleted
   useEffect(() => {
     localStorage.setItem('options', JSON.stringify(options));
+
     if (
       recommendedOption &&
       !options.find((opt) => opt.id === recommendedOption.id)
@@ -55,10 +59,11 @@ export default function App() {
     setRecommendedOption(rand);
   };
 
-  // Streak tracker
+  // -------- Streak Tracker --------
   const computeStreak = (options) => {
     if (!options.length) return 0;
 
+    // Get unique days when options were added
     const dates = Array.from(
       new Set(options.map((opt) => opt.date.split('T')[0]))
     ).sort((a, b) => new Date(b) - new Date(a));
